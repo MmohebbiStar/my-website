@@ -27,6 +27,11 @@ body {
     overflow-x: hidden;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    cursor: none !important;
+}
+
+body * {
+    cursor: none !important;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -848,6 +853,9 @@ section {
 }
 
 @media (max-width: 768px) {
+    body, body * {
+        cursor: auto !important;
+    }
     .nav-menu, .nav-cta { display: none; }
     .hamburger { display: flex; }
 
