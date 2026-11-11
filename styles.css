@@ -360,7 +360,13 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     height: 100%;
     display: block;
     background: transparent !important;
+    /* Disable pointer events so the robot INSIDE spline doesn't grab the mouse itself */
     pointer-events: none !important;
+    /* CSS-driven smooth rotation transition - GPU-accelerated, no JS RAF needed */
+    transform: rotateX(0deg) rotateY(0deg);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: center center;
+    will-change: transform;
 }
 
 .spline-spotlight {

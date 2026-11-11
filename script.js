@@ -10,6 +10,26 @@
     let scrollY = 0, ticking = false;
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
     let ringX = mouseX, ringY = mouseY;
+    let splineRotTicking = false;
+
+    // ===== Spline 3D rotation toward mouse (optimized, throttled) =====
+    const splineEl = document.querySelector('spline-viewer');
+    if (!isMobile && splineEl) {
+        const splineWrap = splineEl.parentElement;
+        let tgY = 0, tgX = 0;
+        document.addEventListener('mousemove', (e) => {
+            if (!splineRotTicking) {
+                requestAnimationFrame(() => {
+                    const r = splineWrap.getBoundingClientRect();
+                    tgY = ((e.clientX - (r.left + r.width/2)) / r.width) * 12;  // deg
+                    tgX = -((e.clientY - (r.top + r.height/2)) / r.height) * 8;
+                    splineEl.style.transform = `rotateY(${tgY}deg) rotateX(${tgX}deg) scale(1.04)`;
+                    splineRotTicking = false;
+                });
+                splineRotTicking = true;
+            }
+        }, { passive: true });
+    }
 
     // ===== Cursor (desktop only) =====
     if (!isMobile) {
