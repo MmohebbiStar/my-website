@@ -502,6 +502,18 @@ section {
     margin: 0 auto;
 }
 
+.section-desc-only {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    max-width: 600px;
+    background: linear-gradient(135deg, #fff, #c7d2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 0.5rem;
+}
+
 /* ===== Reveal ===== */
 .reveal {
     opacity: 0;
