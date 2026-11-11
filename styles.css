@@ -353,7 +353,6 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     width: 100%;
     max-width: 500px;
     height: 100%;
-    perspective: 1000px;
 }
 
 .spline-wrapper spline-viewer {
@@ -361,28 +360,22 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     height: 100%;
     display: block;
     background: transparent !important;
-    will-change: transform;
-    transition: transform 0.1s linear;
-    transform-origin: center center;
 }
 
 .spline-spotlight {
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15) 0%, transparent 60%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.12) 0%, transparent 60%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 0;
-    animation: spotPulse 4s ease-in-out infinite;
 }
 
-@keyframes spotPulse {
-    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-}
+/* Disable heavy effects on Spline container for performance */
+.spline-wrapper { contain: layout style paint; }
 
 /* Floating Cards */
 .floating-card {
@@ -398,7 +391,6 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     gap: 0.7rem;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     animation: floatCard 7s ease-in-out infinite;
-    will-change: transform;
 }
 
 .card-1 { top: 12%; right: -2%; animation-delay: 0s; }
@@ -462,6 +454,8 @@ section {
     padding: 5rem 2rem;
     max-width: 1300px;
     margin: 0 auto;
+    content-visibility: auto;
+    contain-intrinsic-size: 500px;
 }
 
 .section-header { text-align: center; margin-bottom: 3.5rem; }

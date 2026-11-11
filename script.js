@@ -1,30 +1,28 @@
-// ===== Minimal, High-Performance Script =====
+// ===== Optimized High-Performance Script =====
 (function() {
     'use strict';
 
     const isMobile = window.innerWidth < 768 || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const header = document.getElementById('header');
-    let scrollY = 0;
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    const splineViewer = document.querySelector('spline-viewer');
+
+    let scrollY = 0, ticking = false;
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
     let ringX = mouseX, ringY = mouseY;
 
-    // ===== Custom Cursor (single RAF, desktop only) =====
-    const cursorDot = document.getElementById('cursorDot');
-    const cursorRing = document.getElementById('cursorRing');
-
+    // ===== Cursor (desktop only) =====
     if (!isMobile) {
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        }, { passive: true });
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; }, { passive: true });
 
         document.querySelectorAll('a, button, .feature-card, .gallery-item').forEach(el => {
             el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
         });
     } else {
-        if (cursorDot) cursorDot.style.display = 'none';
-        if (cursorRing) cursorRing.style.display = 'none';
+        cursorDot.style.display = 'none';
+        cursorRing.style.display = 'none';
         document.body.style.cursor = 'auto';
         document.querySelectorAll('a, button').forEach(el => el.style.cursor = 'pointer');
     }
@@ -49,15 +47,12 @@
         });
     }
 
-    // ===== Scroll Reveal =====
+    // ===== Reveal =====
     const revealObs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('visible');
-                revealObs.unobserve(e.target);
-            }
+            if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
     // ===== Counter =====
@@ -67,7 +62,7 @@
                 const tgt = parseInt(e.target.dataset.target);
                 const pd = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
                 let cur = 0;
-                const step = tgt / 40;
+                const step = Math.max(1, tgt / 40);
                 const t = setInterval(() => {
                     cur += step;
                     if (cur >= tgt) { e.target.textContent = tgt.toString().replace(/\d/g, d => pd[d]); clearInterval(t); }
@@ -84,22 +79,16 @@
         a.addEventListener('click', (ev) => {
             ev.preventDefault();
             const href = a.getAttribute('href');
-            if (href === '#' || href === '#home') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                return;
-            }
+            if (href === '#' || href === '#home') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
             const t = document.querySelector(href);
             if (t) window.scrollTo({ top: t.offsetTop - header.offsetHeight, behavior: 'smooth' });
         });
     });
 
-    // ===== Scroll handler (throttled via RAF) =====
-    let scrollTicking = false;
+    // ===== Scroll handler =====
     function onScroll() {
         scrollY = window.scrollY;
-        // Header state
         header.classList.toggle('scrolled', scrollY > 50);
-        // Active nav
         let current = '';
         document.querySelectorAll('section[id]').forEach(sec => {
             if (scrollY >= sec.offsetTop - 200) current = sec.id;
@@ -107,80 +96,25 @@
         document.querySelectorAll('.nav-link').forEach(l => {
             l.classList.toggle('active', l.getAttribute('href') === '#' + current);
         });
-        scrollTicking = false;
+        // Orb parallax - minimal
+        const orbs = document.querySelectorAll('.orb');
+        orbs.forEach((orb, i) => { orb.style.transform = `translateY(${scrollY * (i + 1) * 0.02}px)`; });
+        ticking = false;
     }
     window.addEventListener('scroll', () => {
-        if (!scrollTicking) { requestAnimationFrame(onScroll); scrollTicking = true; }
+        if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
     }, { passive: true });
 
-    // ===== Spline 3D Scene - make robot "grab" / look at mouse =====
-    const splineViewer = document.querySelector('spline-viewer');
-    let splineApp = null;
-    let splineLoaded = false;
-
-    function setupSplineInteraction() {
-        if (!splineViewer || splineLoaded) return;
-        // Wait until spline is ready and we can access objects
-        const tryLoad = () => {
-            if (splineViewer.getSplineInstance) {
-                splineViewer.getSplineInstance().then(app => {
-                    splineApp = app;
-                    splineLoaded = true;
-                }).catch(() => setTimeout(tryLoad, 500));
-            } else {
-                setTimeout(tryLoad, 500);
-            }
-        };
-        // Try after scene loads
-        splineViewer.addEventListener('load', tryLoad, { once: true });
-        setTimeout(tryLoad, 3000);
-    }
-    setupSplineInteraction();
-
-    // ===== Single RAF loop for cursor (desktop only) =====
+    // ===== Single RAF loop for cursor (NO spline parallax - too heavy) =====
     function tick() {
         if (!isMobile) {
-            // Cursor dot - direct follow
             cursorDot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
-
-            // Cursor ring - smooth follow
-            ringX += (mouseX - ringX) * 0.22;
-            ringY += (mouseY - ringY) * 0.22;
+            ringX += (mouseX - ringX) * 0.2;
+            ringY += (mouseY - ringY) * 0.2;
             cursorRing.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
         }
         requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
-
-    // ===== Make the Spline 3D scene follow/rotate toward mouse =====
-    // This adds a parallax/tilt so the robot appears to "reach" toward cursor
-    if (!isMobile && splineViewer) {
-        const splineWrapper = splineViewer.parentElement;
-        let splineRotY = 0, splineRotX = 0;
-        let targetRotY = 0, targetRotX = 0;
-        let splineScale = 1;
-
-        document.addEventListener('mousemove', (e) => {
-            const rect = splineWrapper.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            // Normalize mouse position relative to scene center (-1 to 1)
-            targetRotY = ((e.clientX - centerX) / rect.width) * 0.4;
-            targetRotX = ((e.clientY - centerY) / rect.height) * -0.3;
-        });
-
-        // Smoothly rotate spline viewer to look at cursor
-        function splineLook() {
-            splineRotY += (targetRotY - splineRotY) * 0.05;
-            splineRotX += (targetRotX - splineRotX) * 0.05;
-
-            splineViewer.style.transform =
-                `perspective(1000px) rotateY(${splineRotY}rad) rotateX(${splineRotX}rad) scale(1.05)`;
-
-            requestAnimationFrame(splineLook);
-        }
-        splineLook();
-    }
 
 })();
