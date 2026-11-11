@@ -113,15 +113,56 @@
         if (!scrollTicking) { requestAnimationFrame(onScroll); scrollTicking = true; }
     }, { passive: true });
 
-    // ===== Single RAF loop for cursor (only desktop, no particles) =====
+    // ===== Hand chaser =====
+    const handChaser = document.getElementById('handChaser');
+    let handX = mouseX, handY = mouseY;
+    let handActive = false;
+    let handRotation = 0;
+
+    // Activate hand after 1.5s (so it appears from edge dramatically)
+    if (!isMobile) {
+        setTimeout(() => { handActive = true; handChaser.classList.add('active'); }, 1500);
+    }
+
+    // Grab animation when hovering on interactive elements
+    document.querySelectorAll('a, button, .feature-card, .gallery-item, .floating-card, .btn').forEach(el => {
+        el.addEventListener('mouseenter', () => handChaser.classList.add('grabbing'));
+        el.addEventListener('mouseleave', () => handChaser.classList.remove('grabbing'));
+    });
+
+    // ===== Single RAF loop for cursor + hand (desktop only) =====
     function tick() {
         if (!isMobile) {
-            // Cursor dot - direct
+            // Cursor dot - direct follow
             cursorDot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
-            // Cursor ring - lerp
-            ringX += (mouseX - ringX) * 0.25;
-            ringY += (mouseY - ringY) * 0.25;
+
+            // Cursor ring - smooth follow
+            ringX += (mouseX - ringX) * 0.22;
+            ringY += (mouseY - ringY) * 0.22;
             cursorRing.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
+
+            // Hand chaser - delayed follow (comes from behind)
+            if (handActive) {
+                const dx = mouseX - handX;
+                const dy = mouseY - handY - 10; // hand appears slightly below
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                handX += dx * 0.08;
+                handY += dy * 0.08;
+
+                // Calculate rotation based on movement direction
+                if (dist > 2) {
+                    handRotation = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                }
+
+                // When close enough, trigger grab via ring scale (visual feedback)
+                const isClose = dist < 20;
+                const scale = isClose ? 1.1 : 1;
+
+                // Place hand below cursor point with rotation
+                handChaser.style.transform =
+                    `translate(${handX - 22}px, ${handY - 8}px) rotate(${handRotation}deg) scale(${scale})`;
+            }
         }
         requestAnimationFrame(tick);
     }
