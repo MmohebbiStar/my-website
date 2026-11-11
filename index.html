@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
     <!-- Glowing Orbs -->
@@ -78,6 +79,18 @@
             </div>
         </div>
         <div class="hero-visual">
+            <div class="spline-spotlight"></div>
+
+            <!-- Spline 3D Scene -->
+            <div class="spline-wrapper">
+                <spline-viewer
+                    url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                    loading-anim-type="spinner-small-dark"
+                    class="spline-canvas"
+                ></spline-viewer>
+            </div>
+
+            <!-- All 3 floating cards remain -->
             <div class="floating-card card-1">
                 <div class="card-icon">🎨</div>
                 <div class="card-info">
@@ -97,15 +110,6 @@
                 <div class="card-info">
                     <span class="card-label">امنیت کامل</span>
                     <span class="card-value">۲۵۶ بیت</span>
-                </div>
-            </div>
-            <div class="hero-circle">
-                <div class="circle-ring ring-1"></div>
-                <div class="circle-ring ring-2"></div>
-                <div class="circle-ring ring-3"></div>
-                <div class="circle-core">
-                    <div class="core-pulse"></div>
-                    <span>M</span>
                 </div>
             </div>
         </div>
