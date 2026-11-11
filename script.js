@@ -6,7 +6,6 @@
     const header = document.getElementById('header');
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
-    const splineViewer = document.querySelector('spline-viewer');
 
     let scrollY = 0, ticking = false;
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;

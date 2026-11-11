@@ -360,6 +360,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     height: 100%;
     display: block;
     background: transparent !important;
+    pointer-events: none !important;
 }
 
 .spline-spotlight {
