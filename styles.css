@@ -156,24 +156,25 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
 }
 
 .logo-icon {
-    color: var(--accent-1);
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.6));
+    filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
     transition: transform 0.3s ease, filter 0.3s ease;
+    flex-shrink: 0;
 }
 
 .logo-icon svg {
     width: 100%;
     height: 100%;
+    display: block;
 }
 
 .logo:hover .logo-icon {
-    transform: scale(1.1) rotate(-5deg);
-    filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.9));
+    transform: scale(1.12) rotate(-6deg);
+    filter: drop-shadow(0 0 18px rgba(99, 102, 241, 0.9));
 }
 
 .nav-menu {
