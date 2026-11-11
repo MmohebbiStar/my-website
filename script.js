@@ -12,23 +12,85 @@
     let ringX = mouseX, ringY = mouseY;
     let splineRotTicking = false;
 
-    // ===== Spline 3D rotation toward mouse (optimized, throttled) =====
-    const splineRotator = document.getElementById('splineRotator');
-    const splineWrap = splineRotator ? splineRotator.parentElement : null;
-    if (!isMobile && splineRotator && splineWrap) {
-        let tgY = 0, tgX = 0;
-        document.addEventListener('mousemove', (e) => {
-            if (!splineRotTicking) {
-                requestAnimationFrame(() => {
-                    const r = splineWrap.getBoundingClientRect();
-                    tgY = ((e.clientX - (r.left + r.width/2)) / r.width) * 15;  // deg
-                    tgX = -((e.clientY - (r.top + r.height/2)) / r.height) * 10;
-                    splineRotator.style.transform = `rotateY(${tgY}deg) rotateX(${tgX}deg) scale(1.04)`;
-                    splineRotTicking = false;
-                });
-                splineRotTicking = true;
+    // ===== Spline 3D: robot HEAD follows mouse =====
+    const splineViewer = document.getElementById('splineViewer');
+    let splineApp = null;
+    let headObjects = [];
+    let eyeObjects = [];
+    let splineReady = false;
+
+    function findHeadObjects(obj, depth = 0) {
+        if (!obj) return;
+        const name = (obj.name || '').toLowerCase();
+        // Common Spline robot head naming patterns
+        if (/head|face|skull|neck|chin|eye/.test(name)) {
+            if (/eye/.test(name)) eyeObjects.push(obj);
+            else headObjects.push(obj);
+        }
+        // Also look for any top-level child group that is the robot body
+        if (obj.children && obj.children.length) {
+            obj.children.forEach(c => findHeadObjects(c, depth + 1));
+        }
+    }
+
+    function initSplineHead() {
+        if (!splineViewer || splineReady) return;
+        splineViewer.getSplineInstance ? splineViewer.getSplineInstance().then(app => {
+            splineApp = app;
+            const allObjs = app.getAllObjects ? app.getAllObjects() : (app._objects || []);
+            allObjs.forEach(o => findHeadObjects(o));
+
+            // If no specific head found, find top-level "Robot" or first named object that's a group
+            if (headObjects.length === 0) {
+                const robotObj = allObjs.find(o => /robot|character|bot|spline|model/i.test(o.name));
+                if (robotObj) headObjects.push(robotObj);
             }
+
+            splineReady = true;
+        }).catch(() => setTimeout(initSplineHead, 800)) : setTimeout(initSplineHead, 800);
+    }
+    if (!isMobile && splineViewer) {
+        splineViewer.addEventListener('load', initSplineHead, { once: true });
+        setTimeout(initSplineHead, 4000);
+    }
+
+    // Mouse target for head rotation (normalized -1 to 1)
+    let targetRotY = 0, targetRotX = 0;
+    let curRotY = 0, curRotX = 0;
+
+    if (!isMobile && splineViewer) {
+        const splineWrap = splineViewer.parentElement;
+        document.addEventListener('mousemove', (e) => {
+            const r = splineWrap.getBoundingClientRect();
+            targetRotY = ((e.clientX - (r.left + r.width/2)) / r.width) * 0.6;   // radians (~34deg)
+            targetRotX = -((e.clientY - (r.top + r.height/2)) / r.height) * 0.4;
         }, { passive: true });
+
+        // Smooth head-follow loop (separate, lightweight rAF)
+        function animateHead() {
+            if (splineReady && headObjects.length) {
+                curRotY += (targetRotY - curRotY) * 0.08;
+                curRotX += (targetRotX - curRotX) * 0.08;
+
+                headObjects.forEach(obj => {
+                    if (obj.rotation) {
+                        obj.rotation.y = curRotY;
+                        obj.rotation.x = curRotX;
+                    } else if (obj.quaternion) {
+                        obj.quaternion.setFromEuler(curRotX, curRotY, 0);
+                    }
+                });
+                // Eyes follow slightly faster for more alive feel
+                eyeObjects.forEach(obj => {
+                    if (obj.rotation) {
+                        obj.rotation.y = curRotY * 1.3;
+                        obj.rotation.x = curRotX * 1.3;
+                    }
+                });
+            }
+            requestAnimationFrame(animateHead);
+        }
+        animateHead();
     }
 
     // ===== Cursor (desktop only) =====
