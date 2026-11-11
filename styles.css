@@ -98,42 +98,23 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     border-color: var(--accent-2);
 }
 
-/* ===== Robot Hand Cursor Chaser ===== */
-.hand-chaser {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 44px;
-    height: 44px;
-    pointer-events: none !important;
-    z-index: 2147483645 !important;
-    transform-origin: center bottom;
-    will-change: transform;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    filter: drop-shadow(0 4px 12px rgba(99,102,241,0.5));
+/* ===== MohebbiDEV Logo Typography ===== */
+.logo-text {
+    background: linear-gradient(135deg, #fff 0%, #c7d2fe 40%, #818cf8 70%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    font-size: 1.4rem;
+    font-family: 'Vazirmatn', 'Segoe UI', system-ui, sans-serif;
 }
-
-.hand-chaser.active { opacity: 1; }
-.hand-chaser.grabbing .hand-svg { transform: scale(0.7) rotate(-10deg); }
-.hand-chaser.grabbing .fin { transform: scaleY(0.5) translateY(4px); }
-.hand-chaser.grabbing .ft { transform: rotate(25deg) scaleY(0.5) translateY(2px) !important; }
-
-.hand-svg {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.15s ease;
-    display: block;
-}
-.hand-svg .fin {
-    transition: transform 0.15s ease;
-    transform-origin: center bottom;
-    transform-box: fill-box;
-}
-
-/* Hide hand on mobile/touch */
-@media (max-width: 768px), (pointer: coarse) {
-    .hand-chaser { display: none !important; }
+.logo-text .dev-part {
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
 }
 
 /* ===== Header ===== */
@@ -177,13 +158,6 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
 
 @keyframes logoSpin {
     to { transform: rotate(360deg); }
-}
-
-.logo-text {
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .nav-menu {
@@ -379,8 +353,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     width: 100%;
     max-width: 500px;
     height: 100%;
-    border-radius: 24px;
-    overflow: hidden;
+    perspective: 1000px;
 }
 
 .spline-wrapper spline-viewer {
@@ -388,6 +361,9 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     height: 100%;
     display: block;
     background: transparent !important;
+    will-change: transform;
+    transition: transform 0.1s linear;
+    transform-origin: center center;
 }
 
 .spline-spotlight {
