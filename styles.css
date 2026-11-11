@@ -1007,9 +1007,9 @@ section {
         animation: none !important;
         z-index: 2;
     }
-    .card-1 { left: 50%; top: 0; right: auto; bottom: auto; }
-    .card-2 { left: 50%; bottom: 0; top: auto; right: auto; }
-    .card-3 { display: none !important; }
+    .card-1 { left: 50% !important; top: 0 !important; right: auto !important; bottom: auto !important; }
+    .card-2 { left: 50% !important; bottom: 0 !important; top: auto !important; right: auto !important; }
+    .card-3 { display: none !important; right: auto !important; left: auto !important; }
 
     .gallery-grid { grid-template-columns: 1fr; }
     .gallery-item-wide { grid-column: span 1; }
