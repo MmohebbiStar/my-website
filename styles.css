@@ -325,6 +325,10 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
     font-size: 0.95rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    font-family: inherit;
 }
 
 .btn-primary {
