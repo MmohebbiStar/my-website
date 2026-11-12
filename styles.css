@@ -926,6 +926,40 @@ section {
 .social-link-insta:hover {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
 }
+.social-link-tg:hover { background: linear-gradient(135deg, #0088cc, #229ED9); }
+
+/* Contact list icons in footer */
+.contact-list { list-style: none; padding: 0; }
+.contact-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.contact-list li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.contact-list li a:hover { color: var(--accent-1); }
+.contact-ic {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.15));
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-1);
+}
+.contact-ic svg {
+    width: 15px;
+    height: 15px;
+}
 
 .footer-col h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 1.1rem; }
 .footer-col ul li { margin-bottom: 0.6rem; }
