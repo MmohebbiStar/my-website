@@ -918,6 +918,10 @@ section {
 .social-link svg { width: 16px; height: 16px; color: var(--text-secondary); transition: color 0.2s ease; }
 .social-link:hover { background: var(--gradient-1); border-color: transparent; transform: translateY(-2px); }
 .social-link:hover svg { color: white; }
+.social-link-wa:hover { background: linear-gradient(135deg, #25D366, #128C7E); }
+.social-link-insta:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
 
 .footer-col h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 1.1rem; }
 .footer-col ul li { margin-bottom: 0.6rem; }
