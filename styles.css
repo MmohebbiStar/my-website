@@ -697,6 +697,13 @@ section {
     border-radius: 18px;
     overflow: hidden;
     transition: transform 0.5s ease;
+    background-size: cover;
+    background-position: center;
+}
+/* Real-photo gallery items that use background-image get smart positioning */
+.gallery-item-tall .gallery-img[style*="background-image"] {
+    background-position: center top;
+}
 }
 
 .gallery-overlay {
@@ -1020,7 +1027,8 @@ section {
     .about-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
 
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .gallery-item-tall { grid-row: span 1; }
+    .gallery-item-tall { grid-row: span 2; }
+    .gallery-item-tall .gallery-img { min-height: 490px; }
 
     .footer-content { grid-template-columns: 1fr 1fr; gap: 2rem; }
 
@@ -1078,9 +1086,18 @@ section {
     .card-2 { left: -45px !important; top: 58% !important; right: auto !important; bottom: auto !important; }
     .card-3 { display: none !important; right: auto !important; left: auto !important; }
 
-    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+    }
     .gallery-item-wide { grid-column: span 1; }
     .gallery-item-tall { grid-row: span 1; }
+    .gallery-img {
+        height: 280px;
+    }
+    .gallery-item-tall .gallery-img {
+        height: 420px;
+    }
 
     .hero-stats { flex-wrap: wrap; gap: 1rem; }
     .stat-divider { display: none; }
