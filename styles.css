@@ -704,6 +704,14 @@ section {
 .gallery-item-tall .gallery-img[style*="background-image"] {
     background-position: center top;
 }
+
+/* Hero/landscape photo cards: show image with natural aspect ratio (no crop) */
+.gallery-item-hero .gallery-img {
+    background-size: cover;
+    background-position: center;
+    aspect-ratio: 720 / 538;
+    height: auto;
+}
 }
 
 .gallery-overlay {
@@ -1050,6 +1058,7 @@ section {
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .gallery-item-tall { grid-row: span 2; }
     .gallery-item-tall .gallery-img { min-height: 490px; }
+    .gallery-item-hero .gallery-img { min-height: auto; height: auto; aspect-ratio: 720/538; }
 
     .footer-content { grid-template-columns: 1fr 1fr; gap: 2rem; }
 
@@ -1114,10 +1123,14 @@ section {
     .gallery-item-wide { grid-column: span 1; }
     .gallery-item-tall { grid-row: span 1; }
     .gallery-img {
-        height: 280px;
+        height: 240px;
     }
     .gallery-item-tall .gallery-img {
-        height: 420px;
+        height: 400px;
+    }
+    .gallery-item-hero .gallery-img {
+        height: auto;
+        aspect-ratio: 720 / 538;
     }
 
     .hero-stats { flex-wrap: wrap; gap: 1rem; }
