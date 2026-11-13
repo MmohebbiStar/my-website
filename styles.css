@@ -961,6 +961,9 @@ section {
 }
 .social-link-tg:hover { background: linear-gradient(135deg, #0088cc, #229ED9); }
 
+/* Mobile-only heading above photo in about section */
+.about-mobile-heading { display: none; }
+
 /* Contact list icons in footer */
 .contact-list { list-style: none; padding: 0; }
 .contact-list li {
@@ -1024,7 +1027,25 @@ section {
     .hero-content { max-width: 100%; }
     .hero-buttons, .hero-stats { justify-content: center; }
 
-    .about-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    /* Show mobile heading (tag+title) above photo, hide the one inside about-content */
+    .about-mobile-heading {
+        display: block;
+        text-align: center;
+        order: 1;
+    }
+    .about-visual { order: 2; }
+    .about-content { order: 3; }
+    .about-content .section-tag,
+    .about-content .section-title {
+        display: none;
+    }
+    .about-text {
+        text-align: center;
+    }
 
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .gallery-item-tall { grid-row: span 2; }
