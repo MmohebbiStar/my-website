@@ -746,7 +746,7 @@ section {
 .about-image-container {
     position: relative;
     height: auto;
-    max-width: 340px;
+    max-width: 440px;
     margin: 0 auto;
 }
 
@@ -1090,7 +1090,7 @@ section {
 
     section { padding: 3.5rem 1.2rem; }
 
-    .about-image-container { height: auto; max-width: 320px; margin: 0 auto; }
+    .about-image-container { height: auto; max-width: 360px; margin: 0 auto; }
 
     /* Keep glass/translucent look on mobile - strengthen background for visibility */
     .feature-card {
