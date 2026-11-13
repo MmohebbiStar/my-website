@@ -680,7 +680,14 @@ section {
     grid-auto-rows: 240px;
 }
 
-.gallery-item { position: relative; border-radius: 18px; cursor: pointer; }
+.gallery-item {
+    position: relative;
+    border-radius: 18px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
 .gallery-item-wide { grid-column: span 2; }
 .gallery-item-tall { grid-row: span 2; }
 
