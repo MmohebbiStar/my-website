@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MohebbiDEV | تجربه دیجیتال مدرن</title>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=4.1">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://prod.spline.design">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="styles.css?v=4.2">
+    <link rel="preload" as="image" href="images/about-photo.jpg" fetchpriority="high">
 </head>
 <body>
     <!-- Glowing Orbs -->
@@ -272,7 +276,7 @@
             <div class="about-visual reveal">
                 <div class="about-image-container">
                     <div class="about-img-main">
-                        <img src="images/about-photo.jpg" alt="Maryam Mohebbi" class="about-photo">
+                        <img src="images/about-photo.jpg" alt="Maryam Mohebbi" class="about-photo" loading="lazy" decoding="async" fetchpriority="high">
                         <div class="about-img-overlay"></div>
                     </div>
                     <div class="about-floating about-float-1">
@@ -420,6 +424,19 @@
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
 
-    <script src="script.js?v=4.1"></script>
+    <script src="script.js?v=4.2" defer></script>
+    <script type="module">
+        // Lazy-load Spline only after page is interactive
+        window.addEventListener('load', () => {
+            const viewer = document.querySelector('spline-viewer');
+            if (!viewer || viewer.dataset.loaded) return;
+            viewer.dataset.loaded = '1';
+            const s = document.createElement('link');
+            s.rel = 'modulepreload';
+            s.href = 'https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
+            document.head.appendChild(s);
+            import('https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js').catch(()=>{});
+        });
+    </script>
 </body>
 </html>
